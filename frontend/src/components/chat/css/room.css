@@ -1,0 +1,13 @@
+#chatLog {
+    border-color: #CCCCCC;
+    border-width: 2px;
+    border-style: solid;
+    height: 80vh;
+    background-color: #363636;
+    overflow: auto;
+    overflow-wrap: break-word;
+}
+
+#chatLog > div {
+    margin: 0.5vw;
+}
