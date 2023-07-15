@@ -1,6 +1,7 @@
 import React from 'react';
 import './../../styles.css';
 import './../css/room.css';
+import msg_bubble from "../../../assets/msg_bubble.png";
 
 class Room extends React.Component {
     constructor(props) {
@@ -15,9 +16,18 @@ class Room extends React.Component {
     ws = new WebSocket('wss://' + window.location.host + '/ws' + window.location.pathname)
 
     async componentDidMount() {
+        let icon = document.getElementById("icon")
+        icon.href = msg_bubble
+
+        let apple_icon = document.getElementById("apple_icon")
+        apple_icon.href = msg_bubble
+
+        document.title = "Leo Ding - Chat Room " + this.state.roomId;
+
         let log = document.getElementById("chatLog")
         let splitURL = window.location.href.split("/")
         this.setState({roomId: splitURL[splitURL.length - 1]})
+
         this.ws.onmessage = event => {
             let msg = document.createElement("div")
             msg.innerHTML = event.data
