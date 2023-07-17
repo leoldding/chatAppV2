@@ -30,7 +30,7 @@ test("render main error message", () => {
 test("check form submit", () => {
    render(<Main/>);
    user.type(
-       screen.getByPlaceholderText(/room code/i),
+       screen.getByPlaceholderText(/room cde/i),
        "test"
    )
    const buttonElement = screen.getByText(/join room/i);
