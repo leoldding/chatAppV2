@@ -15,13 +15,15 @@ class Main extends React.Component {
     }
 
     async componentDidMount() {
-        let icon = document.getElementById("icon")
-        icon.href = msg_bubble
+        window.onload = () => {
+            let icon = document.getElementById("icon")
+            icon.href = msg_bubble
 
-        let apple_icon = document.getElementById("apple_icon")
-        apple_icon.href = msg_bubble
+            let apple_icon = document.getElementById("apple_icon")
+            apple_icon.href = msg_bubble
 
-        document.title = "Leo Ding - Chat Rooms";
+            document.title = "Leo Ding - Chat Rooms";
+        }
     }
 
     joinRoom = async (event) => {
