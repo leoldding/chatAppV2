@@ -29,7 +29,7 @@ class Main extends React.Component {
     joinRoom = async (event) => {
         event.preventDefault()
         if (this.state.roomId !== "") {
-            window.location.href = window.location.protocol + "//" + window.location.host + "/room/" + this.state.roomId
+            window.location.assign(window.location.protocol + "//" + window.location.host + "/room/" + this.state.roomId)
         } else {
             console.log("Code Error Message");
             this.setState({codeErrorMessage: "Room code can't be empty."});

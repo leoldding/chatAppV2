@@ -3,34 +3,37 @@ import { render, fireEvent, screen } from '@testing-library/react';
 import Main from "./../js/Main.js";
 import user from "@testing-library/user-event";
 
-test("renders main header", () => {
+test("check that header renders", () => {
     render(<Main/>);
     const headerElement = screen.getByText(/chat rooms/i);
     expect(headerElement).toBeInTheDocument();
 });
 
-test("renders main form input", () => {
+test("check that text input box renders", () => {
    render(<Main/>);
    const inputElement = screen.getByPlaceholderText(/room code/i);
    expect(inputElement).toBeInTheDocument();
 });
 
-test("renders main button", () => {
+test("check that button renders", () => {
    render(<Main/>);
    const buttonElement = screen.getByText(/join room/i);
    expect(buttonElement).toBeInTheDocument();
 });
 
-test("render main error message", () => {
+test("check that error message div renders", () => {
    render(<Main/>);
    const errorMessageElement = document.querySelector(".codeErrorChat");
    expect(errorMessageElement).toBeInTheDocument();
 });
 
-test("check form submit", () => {
+test("check good form submission", () => {
    render(<Main/>);
+   const mockLocation = jest.fn()
+   delete window.location;
+   window.location = {assign: mockLocation};
    user.type(
-       screen.getByPlaceholderText(/room cde/i),
+       screen.getByPlaceholderText(/room code/i),
        "test"
    )
    const buttonElement = screen.getByText(/join room/i);
@@ -39,7 +42,7 @@ test("check form submit", () => {
    expect(errorMessageElement).toBeEmptyDOMElement();
 });
 
-test("check empty form submit", () => {
+test("check empty form submission", () => {
    render(<Main/>);
    const buttonElement = screen.getByText(/join room/i);
    const errorMessageElement = document.querySelector(".codeErrorChat");
