@@ -31,8 +31,10 @@ class Main extends React.Component {
         } else {
             console.log("Code Error Message");
             this.setState({codeErrorMessage: "Room code can't be empty."});
+            setTimeout(() => this.setState({codeErrorMessage: "",}), 5000);
         }
     }
+
     render() {
         let codeErrorMessage = this.state.codeErrorMessage;
         return (

@@ -22,7 +22,7 @@ class Room extends React.Component {
         let apple_icon = document.getElementById("apple_icon")
         apple_icon.href = msg_bubble
 
-        document.title = "Leo Ding - Chat Room " + this.state.roomId;
+        document.title = "Leo Ding - Chat Rooms";
 
         let log = document.getElementById("chatLog")
         let splitURL = window.location.href.split("/")
