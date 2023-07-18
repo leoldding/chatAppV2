@@ -31,7 +31,6 @@ class Main extends React.Component {
         if (this.state.roomId !== "") {
             window.location.assign(window.location.protocol + "//" + window.location.host + "/room/" + this.state.roomId)
         } else {
-            console.log("Code Error Message");
             this.setState({codeErrorMessage: "Room code can't be empty."});
             setTimeout(() => this.setState({codeErrorMessage: "",}), 5000);
         }
