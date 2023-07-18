@@ -1,5 +1,5 @@
-import '@testing-library/jest-dom';
-import { render, fireEvent, screen } from '@testing-library/react';
+import "@testing-library/jest-dom";
+import { render, fireEvent, screen } from "@testing-library/react";
 import Main from "./../js/Main.js";
 
 describe("Main component", () => {
@@ -41,21 +41,18 @@ describe("Main component", () => {
       fireEvent.change(
           screen.getByPlaceholderText(/room code/i),
           {target: {value: "test"}}
-      )
+      );
+      fireEvent.click(screen.getByText(/join room/i));
 
-      const buttonElement = screen.getByText(/join room/i);
       const errorMessageElement = document.querySelector(".codeErrorChat");
-      fireEvent.click(buttonElement);
-      
       expect(errorMessageElement).toBeEmptyDOMElement();
       expect(location.assign).toHaveBeenCalledWith(expect.stringContaining("/room/test"));
    });
 
    test("should display error message when room code is empty", () => {
       render(<Main/>);
-      const buttonElement = screen.getByText(/join room/i);
+      fireEvent.click(screen.getByText(/join room/i));
       const errorMessageElement = document.querySelector(".codeErrorChat");
-      fireEvent.click(buttonElement);
       expect(errorMessageElement).toHaveTextContent("Room code can't be empty.");
    });
 });

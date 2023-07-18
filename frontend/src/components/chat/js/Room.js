@@ -16,13 +16,15 @@ class Room extends React.Component {
     ws = new WebSocket('wss://' + window.location.host + '/ws' + window.location.pathname)
 
     async componentDidMount() {
-        let icon = document.getElementById("icon")
-        icon.href = msg_bubble
+        window.onload = () => {
+            let icon = document.getElementById("icon")
+            icon.href = msg_bubble
 
-        let apple_icon = document.getElementById("apple_icon")
-        apple_icon.href = msg_bubble
+            let apple_icon = document.getElementById("apple_icon")
+            apple_icon.href = msg_bubble
 
-        document.title = "Leo Ding - Chat Rooms";
+            document.title = "Leo Ding - Chat Rooms";
+        }
 
         let log = document.getElementById("chatLog")
         let splitURL = window.location.href.split("/")
@@ -53,10 +55,14 @@ class Room extends React.Component {
 
     sendMessage = async (event) => {
         event.preventDefault()
-        if (this.state.inputText !== "") {
-            this.ws.send(this.state.inputText)
+        try {
+            if (this.state.inputText !== "") {
+                this.ws.send(this.state.inputText)
 
-            this.setState({inputText: ""})
+                this.setState({inputText: ""})
+            }
+        } catch(e) {
+            console.log(e)
         }
     }
 
