@@ -9,19 +9,19 @@ describe("Main component", () => {
 
    test("should render header", () => {
        render(<Main/>);
-       const headerElement = screen.getByText(/chat rooms/i);
+       const headerElement = screen.getByText("Chat Rooms");
        expect(headerElement).toBeInTheDocument();
    });
 
    test("should render input box", () => {
       render(<Main/>);
-      const inputElement = screen.getByPlaceholderText(/room code/i);
+      const inputElement = screen.getByPlaceholderText("Room Code");
       expect(inputElement).toBeInTheDocument();
    });
 
    test("should render join room button", () => {
       render(<Main/>);
-      const buttonElement = screen.getByText(/join room/i);
+      const buttonElement = screen.getByText("Join Room");
       expect(buttonElement).toBeInTheDocument();
    });
 
@@ -39,10 +39,10 @@ describe("Main component", () => {
       window.location = {assign: mockLocation};
 
       fireEvent.change(
-          screen.getByPlaceholderText(/room code/i),
+          screen.getByPlaceholderText("Room Code"),
           {target: {value: "test"}}
       );
-      fireEvent.click(screen.getByText(/join room/i));
+      fireEvent.click(screen.getByText("Join Room"));
 
       const errorMessageElement = document.querySelector(".codeErrorChat");
       expect(errorMessageElement).toBeEmptyDOMElement();
@@ -51,7 +51,7 @@ describe("Main component", () => {
 
    test("should display error message when room code is empty", () => {
       render(<Main/>);
-      fireEvent.click(screen.getByText(/join room/i));
+      fireEvent.click(screen.getByText("Join Room"));
       const errorMessageElement = document.querySelector(".codeErrorChat");
       expect(errorMessageElement).toHaveTextContent("Room code can't be empty.");
    });

@@ -3,20 +3,20 @@ import {render, fireEvent, screen} from "@testing-library/react";
 import Room from "./../js/Room.js";
 
 
-describe("Room component", () => {
+describe("Room component elements", () => {
     test("should render component", () => {
         render(<Room/>);
     });
 
     test("should render header", () => {
        render(<Room/>);
-       const headerElement = screen.getByText(/chat room/i);
+       const headerElement = screen.getByText("Chat Room");
        expect(headerElement).toBeInTheDocument();
     });
 
     test("should render room code", () => {
        render(<Room/>);
-       const roomCodeElement = screen.getByText(/room code/i);
+       const roomCodeElement = screen.getByText("Room Code:");
        expect(roomCodeElement).toBeInTheDocument();
     });
 
@@ -28,42 +28,44 @@ describe("Room component", () => {
 
     test("should render text input", () => {
         render(<Room/>);
-        const inputElement = screen.getByPlaceholderText(/message/i);
+        const inputElement = screen.getByPlaceholderText("Message");
         expect(inputElement).toBeInTheDocument();
     });
 
     test("should render send button", () => {
        render(<Room/>);
-       const buttonElement = screen.getByText(/send/i);
+       const buttonElement = screen.getByText("Send");
        expect(buttonElement).toBeInTheDocument();
+    });
+});
+
+describe("Room component websockets", () => {
+    beforeEach(() => {
+        global.mockWebSocket = {
+            send: jest.fn(),
+            onmessage: jest.fn(),
+            onerror: jest.fn(),
+            onclose: jest.fn(),
+        };
+        global.WebSocket = jest.fn().mockImplementation(() => mockWebSocket);
     });
 
     test("should send messages to websocket", () => {
-        const mockWebSocket = {
-            send: jest.fn(),
-        };
-        global.WebSocket = jest.fn().mockImplementation(() => mockWebSocket);
-
         render(<Room/>);
 
-        const message = screen.getByPlaceholderText(/message/i);
+        const message = screen.getByPlaceholderText("Message");
         fireEvent.change(
             message,
             {target: {value: "test"}}
         );
         expect(message.value).toBe("test");
 
-        fireEvent.click(screen.getByText(/send/i));
+        fireEvent.click(screen.getByText("Send"));
 
         expect(message.value).toBe("");
     });
 
     test("should append received message to chatLog", () => {
-        const mockWebSocket = {
-            onmessage: jest.fn(),
-        };
-        global.WebSocket = jest.fn().mockImplementation(() => mockWebSocket);
-
         render(<Room />);
         const chatLog = document.getElementById("chatLog");
 
@@ -74,11 +76,6 @@ describe("Room component", () => {
     });
 
     test("should append closed connection (error) message to chatLog", () => {
-        const mockWebSocket = {
-            onerror: jest.fn(),
-        };
-        global.WebSocket = jest.fn().mockImplementation(() => mockWebSocket);
-
         render(<Room />);
         const chatLog = document.getElementById("chatLog");
 
@@ -88,11 +85,6 @@ describe("Room component", () => {
     });
 
     test("should append closed connection (close) message to chatLog", () => {
-        const mockWebSocket = {
-            onclose: jest.fn(),
-        };
-        global.WebSocket = jest.fn().mockImplementation(() => mockWebSocket);
-
         render(<Room />);
         const chatLog = document.getElementById("chatLog");
 
