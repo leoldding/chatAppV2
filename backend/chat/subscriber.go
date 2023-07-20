@@ -20,9 +20,11 @@ func RoomWS(w http.ResponseWriter, r *http.Request) {
 	ws, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Printf("RoomWS: Error upgrading connection to WebSocket.\nERROR:%f", err)
+		w.WriteHeader(http.StatusBadRequest)
+		return
 	}
 
-	log.Print("RoomWS: Successful connection to " + r.URL.String())
+	log.Printf("RoomWS: Successful connection to " + r.URL.String())
 
 	roomId := strings.Split(r.URL.String(), "/")[4]
 
