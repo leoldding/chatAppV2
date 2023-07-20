@@ -13,7 +13,7 @@ func (pub *publisher) Publish() {
 	for {
 		select {
 		case sub := <-pub.register:
-			log.Println("Registering new room " + sub.roomId)
+			log.Println("Registering sub in room " + sub.roomId)
 			conns := pub.rooms[sub.roomId]
 			if conns == nil {
 				conns = make(map[*connection]bool)
@@ -21,7 +21,7 @@ func (pub *publisher) Publish() {
 			}
 			pub.rooms[sub.roomId][sub.conn] = true
 		case sub := <-pub.deregister:
-			log.Println("Deregistering room " + sub.roomId)
+			log.Println("Deregistering sub from room " + sub.roomId)
 			conns := pub.rooms[sub.roomId]
 			if conns != nil {
 				if _, ok := conns[sub.conn]; ok {
