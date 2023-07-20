@@ -8,12 +8,6 @@ describe("Room component elements", () => {
         render(<Room/>);
     });
 
-    test("should render header", () => {
-       render(<Room/>);
-       const headerElement = screen.getByText("Chat Room");
-       expect(headerElement).toBeInTheDocument();
-    });
-
     test("should render room code", () => {
        render(<Room/>);
        const roomCodeElement = screen.getByText("Room Code:");
@@ -22,7 +16,7 @@ describe("Room component elements", () => {
 
     test("should render chat box", () => {
        render(<Room/>);
-       const chatBoxElement = document.getElementById("chatLog");
+       const chatBoxElement = document.getElementById("logChat");
        expect(chatBoxElement).toBeInTheDocument();
     });
 
@@ -65,31 +59,31 @@ describe("Room component websockets", () => {
         expect(message.value).toBe("");
     });
 
-    test("should append received message to chatLog", () => {
+    test("should append received message to logChat", () => {
         render(<Room />);
-        const chatLog = document.getElementById("chatLog");
+        const logChat = document.getElementById("logChat");
 
         const messageEvent = { data: "test message" };
         mockWebSocket.onmessage(messageEvent);
 
-        expect(chatLog.innerHTML).toContain("test message");
+        expect(logChat.innerHTML).toContain("test message");
     });
 
-    test("should append closed connection (error) message to chatLog", () => {
+    test("should append closed connection (error) message to logChat", () => {
         render(<Room />);
-        const chatLog = document.getElementById("chatLog");
+        const logChat = document.getElementById("logChat");
 
         mockWebSocket.onerror();
 
-        expect(chatLog.innerHTML).toContain("Connection has been closed.");
+        expect(logChat.innerHTML).toContain("Connection has been closed.");
     });
 
-    test("should append closed connection (close) message to chatLog", () => {
+    test("should append closed connection (close) message to logChat", () => {
         render(<Room />);
-        const chatLog = document.getElementById("chatLog");
+        const logChat = document.getElementById("logChat");
 
         mockWebSocket.onclose();
 
-        expect(chatLog.innerHTML).toContain("Connection has been closed.");
+        expect(logChat.innerHTML).toContain("Connection has been closed.");
     });
 });

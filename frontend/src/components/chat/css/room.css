@@ -1,13 +1,79 @@
-#chatLog {
-    border-color: #CCCCCC;
+#logChat {
+    background-color: #FFE2AD;
+    border-color: #FFBF4B;
+    border-radius: 5px;
     border-width: 2px;
     border-style: solid;
-    height: 80vh;
-    background-color: #363636;
+    height: 60vh;
     overflow: auto;
     overflow-wrap: break-word;
+    margin: 1rem auto;
 }
 
-#chatLog > div {
-    margin: 0.5vw;
+#logChat > div {
+    margin: 0.75rem;
+}
+
+.roomChat {
+    margin: 2rem 1.5rem;
+}
+
+.roomChat h1 {
+    font-size: 1rem;
+    margin: 1rem auto;
+}
+
+.roomChat div {
+    font-size: 0.75rem;
+}
+
+.roomChat button, .roomChat input {
+    margin: 0 auto;
+    height: 2rem;
+    border: 0;
+    box-sizing: border-box;
+}
+
+.roomChat button {
+    background-color: #FFBF4B;
+    color: #2C2C2C;
+    border-radius: 5px;
+    margin: 1rem;
+    transition: background-color 0.25s;
+    box-shadow: 0.25rem 0.25rem 0.15rem 0.05rem rgba(44, 44, 44, 0.3);
+    cursor: pointer;
+    width: 4rem;
+}
+
+.roomChat button:hover, .roomChat button:focus {
+    background-color: #FFAB10;
+}
+
+.roomChat button:active {
+    background-color: #F29C00;
+}
+
+.roomChat input {
+    background-color: #FFF4E0;
+    border-bottom: 1px #2C2C2C solid;
+    width: 12rem;
+}
+
+@media (min-width: 769px) {
+    .roomChat h1 {
+        font-size: 2rem;
+    }
+
+    .roomChat div {
+        font-size: 1rem;
+    }
+
+    .roomChat button, .roomChat input {
+        height: 2.5rem;
+        font-size: 1rem;
+    }
+
+    .roomChat input {
+        width: 20rem;
+    }
 }
