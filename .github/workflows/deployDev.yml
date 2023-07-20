@@ -8,7 +8,7 @@ jobs:
   Build_and_Test_Frontend:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Use Node.js 20.x
         uses: actions/setup-node@v2
         with:
@@ -22,7 +22,7 @@ jobs:
   Build_and_Test_Backend:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Use Golang 1.20.x
         uses: actions/setup-go@v4
         with:
@@ -36,7 +36,7 @@ jobs:
     needs: [Build_and_Test_Frontend, Build_and_Test_Backend]
     runs-on: ubuntu-latest
     steps:
-      -   uses: actions/checkout@v2
+      -   uses: actions/checkout@v3
       -   name: Docker Login
           run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 

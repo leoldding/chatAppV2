@@ -24,7 +24,7 @@ func RoomWS(w http.ResponseWriter, r *http.Request) {
 
 	log.Print("RoomWS: Successful connection to " + r.URL.String())
 
-	roomId := strings.Split(r.URL.String(), "/")[3]
+	roomId := strings.Split(r.URL.String(), "/")[4]
 
 	conn := &connection{ws: ws, sendMessage: make(chan []byte, 256)}
 	sub := subscriber{conn: conn, roomId: roomId}

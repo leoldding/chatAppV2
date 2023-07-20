@@ -8,7 +8,7 @@ import (
 func main() {
 	http.HandleFunc("/ping", ping)
 
-	http.HandleFunc("/ws/chatWS", chat.RoomWS)
+	http.HandleFunc("/ws/chatWS/", chat.RoomWS)
 
 	go chat.Pub.Publish()
 
