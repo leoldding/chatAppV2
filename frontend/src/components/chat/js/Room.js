@@ -26,7 +26,7 @@ class Room extends React.Component {
             document.title = "Leo Ding - Chat Rooms";
         }
 
-        let log = document.getElementById("chatLog")
+        let log = document.getElementById("logChat")
         let splitURL = window.location.href.split("/")
         this.setState({roomId: splitURL[splitURL.length - 1]})
 
@@ -69,10 +69,9 @@ class Room extends React.Component {
     render() {
         let roomId = this.state.roomId
         return (
-            <div>
-                <h1>Chat Room</h1>
-                <p>Room Code: {roomId}</p>
-                <div id={"chatLog"}></div>
+            <div className={"roomChat"}>
+                <h1>Room Code: {roomId}</h1>
+                <div id={"logChat"}></div>
                 <form onSubmit={this.sendMessage}>
                     <input type={"text"} placeholder={"Message"} value={this.state.inputText}
                            onChange={(event) => this.setState({inputText: event.target.value})}/>

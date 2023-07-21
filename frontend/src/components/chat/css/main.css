@@ -5,7 +5,7 @@
     color: #FF5757;
 }
 
-.mainChat button, input {
+.mainChat button, .mainChat input {
     margin: 0 auto;
     height: 2rem;
     width: 12rem;
@@ -23,7 +23,7 @@
     cursor: pointer;
 }
 
-.mainChat button:hover, button:focus {
+.mainChat button:hover, .mainChat button:focus {
     background-color: #FFAB10;
 }
 
@@ -55,7 +55,7 @@
         margin: 0.5rem auto 0;
     }
 
-    .mainChat button, input {
+    .mainChat button, .mainChat input {
         height: 4rem;
         width: 24rem;
         font-size: 1.5rem;
