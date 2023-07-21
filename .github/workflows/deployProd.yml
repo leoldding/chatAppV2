@@ -1,0 +1,71 @@
+name: Deploy Development Version
+on:
+  push:
+    branches:
+      - 'main'
+jobs:
+  Build_and_Test_Frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+      - name: Install, Build, and Run Tests
+        working-directory: ./frontend
+        run: |
+          npm ci
+          npm run build --if-present
+          npm run test_deploy
+  Build_and_Test_Backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Golang 1.20.x
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.20.x
+      - name: Install and Run Tests
+        working-directory: ./backend
+        run: |
+          go get ./...
+          go test -v -timeout 60s ./...
+  Build_Project_and_Deploy_to_AWS:
+    needs: [Build_and_Test_Frontend, Build_and_Test_Backend]
+    runs-on: ubuntu-latest
+    steps:
+      -   uses: actions/checkout@v3
+      -   name: Docker Login
+          run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      -   name: Build Frontend Docker
+          run: docker build -t leoldding/chat-app-v2-frontend ./frontend
+      -   name: Build Backend Docker
+          run: docker build -t leoldding/chat-app-v2-backend ./backend
+      -   name: Build Nginx Docker
+          run: docker build -t leoldding/chat-app-v2-nginx ./nginx
+
+      -   name: Push Frontend Docker
+          run: docker push leoldding/chat-app-v2-frontend
+      -   name: Push Backend Docker
+          run: docker push leoldding/chat-app-v2-backend
+      -   name: Push Nginx Docker
+          run: docker push leoldding/chat-app-v2-nginx
+
+      -   name: Generate Deployment Package
+          run: zip -r deploy.zip . -x '*.git*'
+
+      -   name: Deploy to EB
+          uses: einaregilsson/beanstalk-deploy@v21
+          with:
+            aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+            aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+            application_name: chatapp
+            environment_name: Chatapp-env
+            existing_bucket_name: elasticbeanstalk-us-east-1-312810085553
+            region: us-east-1
+            version_label: ${{ github.sha }}
+            deployment_package: deploy.zip
+            wait_for_environment_recovery: 3600
+            use_existing_version_if_available: false
