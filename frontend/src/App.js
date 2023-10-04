@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
-import Room from './components/chat/js/Room.js';
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import ChatMain from './components/chat/js/Main.js';
+import ChatRoom from './components/chat/js/Room.js';
 import msg_bubble from "./assets/msg_bubble.png"
 
 
@@ -20,7 +20,7 @@ function App() {
             <Router>
                 <Routes>
                     <Route path={"/"} element={<ChatMain />} />
-                    <Route path={"/room/:roomId"} element={<Room />} />
+                    <Route path={"/room/:roomId"} element={<ChatRoom />} />
                     <Route path={"*"} element={<Navigate to="/" replace />} />
                 </Routes>
             </Router>

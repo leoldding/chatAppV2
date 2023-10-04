@@ -24,21 +24,21 @@ function ChatRoom() {
         webSocket.current = new WebSocket('wss://' + window.location.host + '/ws/chatWS' + window.location.pathname)
         const log = document.getElementById("logChat")
 
-        webSocket.current.onmessage = event => {
+        webSocket.current.onmessage = (event) => {
             let msg = document.createElement("div")
             msg.innerHTML = event.data
             log.appendChild(msg)
             log.scrollTop = log.scrollHeight - log.clientHeight
         }
 
-        webSocket.current.onerror = event => {
+        webSocket.current.onerror = () => {
             let msg = document.createElement("div")
             msg.innerHTML = "Connection has been closed."
             log.appendChild(msg)
             log.scrollTop = log.scrollHeight - log.clientHeight
         }
 
-        webSocket.current.onclose = event => {
+        webSocket.current.onclose = () => {
             let msg = document.createElement("div")
             msg.innerHTML = "Connection has been closed."
             log.appendChild(msg)
@@ -62,7 +62,7 @@ function ChatRoom() {
     return (
         <div className={"roomChat"}>
             <h1>Room Code: {roomId}</h1>
-            <div id={"logChat"}></div>
+            <div data-testid={"log"} id={"logChat"}></div>
             <form onSubmit={sendMessage}>
                 <input type={"text"} placeholder={"Message"} value={input}
                        onChange={(event) => setInput(event.target.value)}/>

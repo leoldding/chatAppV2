@@ -1,39 +1,29 @@
 import "@testing-library/jest-dom";
-import {render, fireEvent, screen} from "@testing-library/react";
-import Room from "./../js/Room.js";
+import { render, fireEvent, screen } from "@testing-library/react";
+import ChatRoom from "./../js/Room.js";
 
 
-describe("Room component elements", () => {
-    test("should render component", () => {
-        render(<Room/>);
-    });
+describe("Room", () => {
+    it("should render correctly", () => {
+        const { getByText, getByPlaceholderText, getByTestId } = render(
+            <ChatRoom />
+        );
 
-    test("should render room code", () => {
-       render(<Room/>);
-       const roomCodeElement = screen.getByText("Room Code:");
-       expect(roomCodeElement).toBeInTheDocument();
-    });
+        const headerElement = getByText("Room Code:");
+        expect(headerElement).toBeInTheDocument();
 
-    test("should render chat box", () => {
-       render(<Room/>);
-       const chatBoxElement = document.getElementById("logChat");
-       expect(chatBoxElement).toBeInTheDocument();
-    });
+        const logElement = getByTestId("log");
+        expect(logElement).toBeInTheDocument();
 
-    test("should render text input", () => {
-        render(<Room/>);
-        const inputElement = screen.getByPlaceholderText("Message");
+        const inputElement = getByPlaceholderText("Message");
         expect(inputElement).toBeInTheDocument();
-    });
 
-    test("should render send button", () => {
-       render(<Room/>);
-       const buttonElement = screen.getByText("Send");
-       expect(buttonElement).toBeInTheDocument();
+        const buttonElement = getByText("Send");
+        expect(buttonElement).toBeInTheDocument();
     });
 });
 
-describe("Room component websockets", () => {
+describe("Room WebSockets", () => {
     beforeEach(() => {
         global.mockWebSocket = {
             send: jest.fn(),
@@ -44,24 +34,29 @@ describe("Room component websockets", () => {
         global.WebSocket = jest.fn().mockImplementation(() => mockWebSocket);
     });
 
-    test("should send messages to websocket", () => {
-        render(<Room/>);
+    it("should send messages to websocket", () => {
+        const { getByText, getByPlaceholderText } = render(
+            <ChatRoom/>
+        );
 
-        const message = screen.getByPlaceholderText("Message");
+        const message = getByPlaceholderText("Message");
         fireEvent.change(
             message,
             {target: {value: "test"}}
         );
         expect(message.value).toBe("test");
 
-        fireEvent.click(screen.getByText("Send"));
+        fireEvent.click(getByText("Send"));
 
         expect(message.value).toBe("");
     });
 
-    test("should append received message to logChat", () => {
-        render(<Room />);
-        const logChat = document.getElementById("logChat");
+    it("should append received message to logChat", () => {
+        const { getByTestId } = render(
+            <ChatRoom />
+        );
+
+        const logChat = getByTestId("log");
 
         const messageEvent = { data: "test message" };
         mockWebSocket.onmessage(messageEvent);
@@ -69,18 +64,24 @@ describe("Room component websockets", () => {
         expect(logChat.innerHTML).toContain("test message");
     });
 
-    test("should append closed connection (error) message to logChat", () => {
-        render(<Room />);
-        const logChat = document.getElementById("logChat");
+    it("should append closed connection (error) message to logChat", () => {
+        const { getByTestId } = render(
+            <ChatRoom />
+        );
+
+        const logChat = getByTestId("log");
 
         mockWebSocket.onerror();
 
         expect(logChat.innerHTML).toContain("Connection has been closed.");
     });
 
-    test("should append closed connection (close) message to logChat", () => {
-        render(<Room />);
-        const logChat = document.getElementById("logChat");
+    it("should append closed connection (close) message to logChat", () => {
+        const { getByTestId } = render(
+            <ChatRoom />
+        );
+
+        const logChat = getByTestId("log");
 
         mockWebSocket.onclose();
 
