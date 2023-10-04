@@ -1,61 +1,44 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./../../styles.css";
 import "./../css/main.css";
-import msg_bubble from "./../../../assets/msg_bubble.png"
 
-class Main extends React.Component {
+function ChatMain() {
+    const [roomId, setRoomId] = useState("");
+    const [codeError, setCodeError] = useState("");
 
-    constructor(props) {
-        super(props);
+    // set document title
+    useEffect(() => {
+        document.title = "Leo Ding - Chat Rooms";
+    }, []);
 
-        this.state = {
-            roomId: "",
-            codeErrorMessage: "",
-        }
-    }
-
-    async componentDidMount() {
-        window.onload = () => {
-            let icon = document.getElementById("icon")
-            icon.href = msg_bubble
-
-            let apple_icon = document.getElementById("apple_icon")
-            apple_icon.href = msg_bubble
-
-            document.title = "Leo Ding - Chat Rooms";
-        }
-    }
-
-    joinRoom = async (event) => {
+    const joinRoom = (event) => {
         event.preventDefault()
         try {
-            if (this.state.roomId !== "") {
-                window.location.assign(window.location.protocol + "//" + window.location.host + "/room/" + this.state.roomId)
+            if (roomId !== "") {
+                window.location.assign(window.location.protocol + "//" + window.location.host + "/room/" + roomId)
             } else {
-                this.setState({codeErrorMessage: "Room code can't be empty."});
-                setTimeout(() => this.setState({codeErrorMessage: "",}), 5000);
+                setCodeError("Room code can't be empty.");
+                setTimeout(() => setCodeError(""), 5000);
             }
         } catch (e) {
             console.log(e)
         }
     }
 
-    render() {
-        let codeErrorMessage = this.state.codeErrorMessage;
-        return (
-            <div className={"mainChat"}>
-                <h1>Chat Rooms</h1>
-                <form onSubmit={this.joinRoom}>
-                    <div>
-                        <input type={"text"} placeholder={"Room Code"} value={this.state.roomId}
-                            onChange={(event) => this.setState({roomId: event.target.value})}/>
-                        <div className={"codeErrorChat"}>{codeErrorMessage}</div>
-                    </div>
-                    <button>Join Room</button>
-                </form>
-            </div>
-        )
-    }
+    return (
+        <div className={"mainChat"}>
+            <h1>Chat Rooms</h1>
+            <form onSubmit={joinRoom}>
+                <div>
+                    <input type={"text"} placeholder={"Room Code"} value={roomId}
+                        onChange={(event) => setRoomId(event.target.value)}/>
+                    <div className={"codeErrorChat"}>{codeError}</div>
+                </div>
+                <button>Join Room</button>
+            </form>
+        </div>
+    )
+
 }
 
-export default Main;
+export default ChatMain;
