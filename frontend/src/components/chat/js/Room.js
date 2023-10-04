@@ -1,86 +1,75 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import './../../styles.css';
 import './../css/room.css';
-import msg_bubble from "../../../assets/msg_bubble.png";
 
-class Room extends React.Component {
-    constructor(props) {
-        super(props);
+function ChatRoom() {
+    const [input, setInput] = useState("");
+    const [roomId, setRoomId] = useState("");
+    let webSocket = useRef(null);
+    const params = useParams();
 
-        this.state = {
-            inputText: "",
-            roomId: "",
-        };
-    }
+    // set document title
+    useEffect(() => {
+        document.title = "Leo Ding - Chat Rooms";
+    }, []);
 
-    ws = new WebSocket('wss://' + window.location.host + '/ws/chatWS' + window.location.pathname)
+    // set room code
+    useEffect(() => {
+        setRoomId(params.roomId);
+    }, [params])
 
-    async componentDidMount() {
-        window.onload = () => {
-            let icon = document.getElementById("icon")
-            icon.href = msg_bubble
+    // websocket channel
+    useEffect(() => {
+        webSocket.current = new WebSocket('wss://' + window.location.host + '/ws/chatWS' + window.location.pathname)
+        const log = document.getElementById("logChat")
 
-            let apple_icon = document.getElementById("apple_icon")
-            apple_icon.href = msg_bubble
-
-            document.title = "Leo Ding - Chat Rooms";
-        }
-
-        let log = document.getElementById("logChat")
-        let splitURL = window.location.href.split("/")
-        this.setState({roomId: splitURL[splitURL.length - 1]})
-
-        this.ws.onmessage = event => {
+        webSocket.current.onmessage = event => {
             let msg = document.createElement("div")
             msg.innerHTML = event.data
             log.appendChild(msg)
             log.scrollTop = log.scrollHeight - log.clientHeight
         }
 
-        this.ws.onerror = event => {
+        webSocket.current.onerror = event => {
             let msg = document.createElement("div")
             msg.innerHTML = "Connection has been closed."
             log.appendChild(msg)
             log.scrollTop = log.scrollHeight - log.clientHeight
         }
 
-        this.ws.onclose = event => {
+        webSocket.current.onclose = event => {
             let msg = document.createElement("div")
             msg.innerHTML = "Connection has been closed."
             log.appendChild(msg)
             log.scrollTop = log.scrollHeight - log.clientHeight
         }
-    }
+    }, [webSocket]);
 
 
-    sendMessage = async (event) => {
+    const sendMessage = async (event) => {
         event.preventDefault()
         try {
-            if (this.state.inputText !== "") {
-                this.ws.send(this.state.inputText)
-
-                this.setState({inputText: ""})
+            if (input !== "") {
+                webSocket.current.send(input)
+                setInput("");
             }
         } catch(e) {
             console.log(e)
         }
     }
 
-    render() {
-        let roomId = this.state.roomId
-        return (
-            <div className={"roomChat"}>
-                <h1>Room Code: {roomId}</h1>
-                <div id={"logChat"}></div>
-                <form onSubmit={this.sendMessage}>
-                    <input type={"text"} placeholder={"Message"} value={this.state.inputText}
-                           onChange={(event) => this.setState({inputText: event.target.value})}/>
-                    <button>Send</button>
-                </form>
-            </div>
-        )
-    }
-
+    return (
+        <div className={"roomChat"}>
+            <h1>Room Code: {roomId}</h1>
+            <div id={"logChat"}></div>
+            <form onSubmit={sendMessage}>
+                <input type={"text"} placeholder={"Message"} value={input}
+                       onChange={(event) => setInput(event.target.value)}/>
+                <button>Send</button>
+            </form>
+        </div>
+    )
 }
 
-export default Room;
+export default ChatRoom;
