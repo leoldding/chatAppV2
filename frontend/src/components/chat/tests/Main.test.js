@@ -19,7 +19,7 @@ describe("Main", () => {
    });
 
    it("should redirect when joining a room", () => {
-      const { getByText, getByPlaceholderText } = render(
+      const { getByText, getByPlaceholderText, getByTestId } = render(
           <ChatMain />
       );
 
@@ -33,17 +33,17 @@ describe("Main", () => {
       );
       fireEvent.click(getByText("Join Room"));
 
-      const errorMessageElement = document.querySelector(".codeErrorChat");
+      const errorMessageElement = getByTestId("error");
       expect(errorMessageElement).toBeEmptyDOMElement();
       expect(location.assign).toHaveBeenCalledWith(expect.stringContaining("/room/test"));
    });
 
    it("should display error message when room code is empty", () => {
-      const { getByText } = render(
+      const { getByText, getByTestId } = render(
           <ChatMain />
       );
       fireEvent.click(getByText("Join Room"));
-      const errorMessageElement = document.querySelector(".codeErrorChat");
+      const errorMessageElement = getByTestId("error");
       expect(errorMessageElement).toHaveTextContent("Room code can't be empty.");
    });
 });
