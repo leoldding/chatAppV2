@@ -30,10 +30,10 @@ function ChatMain() {
                 <div>
                     <input type={"text"} placeholder={"Room Code"} value={roomId}
                            className={"bg-chatOrange-1 text-sm md:text-xl h-8 md:h-16 w-48 md:w-96 border-b-[1px] border-solid border-chatOrange-6"}
-                        onChange={(event) => setRoomId(event.target.value)}/>
+                           onChange={(event) => setRoomId(event.target.value)}/>
                     <div data-testid={"error"} className={"text-xs md:text-lg text-[#FF5757] h-4 mt-1 md:mt-2 mx-auto"}>{codeError}</div>
                 </div>
-                <button className={"bg-chatOrange-3 text-sm md:text-xl my-4 md:my-8 mx-auto h-8 md:h-16 w-48 md:w-96 rounded-md shadow-[0.25rem_0.25rem_0.15rem_0.05rem_rgba(44,44,44,0.3)] transition duration-300 hover:bg-chatOrange-4 active:bg-chatOrange-5"}>Join Room</button>
+                <button className={"bg-chatOrange-3 text-sm md:text-xl my-4 md:my-8 mx-auto h-8 md:h-16 w-48 md:w-96 rounded-md shadow-[0.25rem_0.25rem_0.15rem_0.05rem_rgba(44,44,44,0.3)] transition duration-300 md:hover:bg-chatOrange-4 md:active:bg-chatOrange-5"}>Join Room</button>
             </form>
         </div>
     )

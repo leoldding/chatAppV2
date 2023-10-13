@@ -19,7 +19,7 @@ function App() {
 }, []);
 
     return (
-        <div>
+        <div className={"h-screen"}>
             <Router>
                 <Routes>
                     <Route path={"/"} element={<ChatMain />} />
