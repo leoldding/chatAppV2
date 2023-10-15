@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom";
 import { render, fireEvent } from "@testing-library/react";
 import ChatMain from "./../js/Main.js";
+import room from "../js/Room";
 
 describe("Main", () => {
    it("should render correctly", () => {
@@ -28,22 +29,55 @@ describe("Main", () => {
       window.location = {assign: mockLocation};
 
       fireEvent.change(
+          getByPlaceholderText("Display Name"),
+          {target: {value: "testName"}}
+      )
+      fireEvent.change(
           getByPlaceholderText("Room Code"),
-          {target: {value: "test"}}
+          {target: {value: "testRoom"}}
       );
       fireEvent.click(getByText("Join Room"));
 
-      const errorMessageElement = getByTestId("error");
+      let errorMessageElement = getByTestId("nameError");
       expect(errorMessageElement).toBeEmptyDOMElement();
-      expect(location.assign).toHaveBeenCalledWith(expect.stringContaining("/room/test"));
+
+      errorMessageElement = getByTestId("roomError");
+      expect(errorMessageElement).toBeEmptyDOMElement();
+
+      expect(location.assign).toHaveBeenCalledWith(expect.stringContaining("/name/testName/room/testRoom"));
    });
 
-   it("should display error message when room code is empty", () => {
-      const { getByText, getByTestId } = render(
+   it("should display error messages on empty inputs", () => {
+      const { getByText, getByPlaceholderText, getByTestId } = render(
           <ChatMain />
       );
-      fireEvent.click(getByText("Join Room"));
-      const errorMessageElement = getByTestId("error");
-      expect(errorMessageElement).toHaveTextContent("Room code can't be empty.");
+      const nameErrorElement = getByTestId("nameError");
+      const roomErrorElement = getByTestId("roomError");
+      const buttonElement = getByText("Join Room");
+
+      fireEvent.click(buttonElement);
+      expect(nameErrorElement).toHaveTextContent("Display name can't be empty.");
+      expect(roomErrorElement).toHaveTextContent("Room code can't be empty.");
+
+      fireEvent.change(
+          getByPlaceholderText("Display Name"),
+          {target: {value: "testName"}}
+      )
+      fireEvent.click(buttonElement);
+      expect(nameErrorElement).toHaveTextContent("");
+      expect(roomErrorElement).toHaveTextContent("Room code can't be empty.");
+
+      fireEvent.change(
+          getByPlaceholderText("Display Name"),
+          {target: {value: ""}}
+      )
+      fireEvent.change(
+          getByPlaceholderText( "Room Code"),
+          {target: {value: "testRoom"}}
+      )
+      fireEvent.click(buttonElement);
+      expect(nameErrorElement).toHaveTextContent("Display name can't be empty.");
+      expect(roomErrorElement).toHaveTextContent("");
+
    });
 });

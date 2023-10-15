@@ -23,7 +23,7 @@ function App() {
             <Router>
                 <Routes>
                     <Route path={"/"} element={<ChatMain />} />
-                    <Route path={"/room/:roomId"} element={<ChatRoom />} />
+                    <Route path={"/name/:displayName/room/:roomId"} element={<ChatRoom />} />
                     <Route path={"*"} element={<Navigate to="/" replace />} />
                 </Routes>
             </Router>
