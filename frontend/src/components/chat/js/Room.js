@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 
 function ChatRoom() {
     const [input, setInput] = useState("");
+    const [displayName, setDisplayName] = useState("");
     const [roomId, setRoomId] = useState("");
     let webSocket = useRef(null);
     const params = useParams();
@@ -14,6 +15,7 @@ function ChatRoom() {
 
     // set room code
     useEffect(() => {
+        setDisplayName(params.displayName);
         setRoomId(params.roomId);
     }, [params])
 
@@ -52,7 +54,7 @@ function ChatRoom() {
         event.preventDefault()
         try {
             if (input !== "") {
-                webSocket.current.send(input)
+                webSocket.current.send(displayName + ": " + input);
                 setInput("");
             }
         } catch(e) {
